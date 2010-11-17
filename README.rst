@@ -30,16 +30,23 @@ Installing this package gets you a shell command, ``cloudservers``, that you
 can use to interact with Rackspace.
 
 You'll need to provide your Rackspace username and API key. You can do this
-with the ``--username`` and ``--apikey`` params, but it's easier to just set
-them as environment variables::
+with the ``--username`` and ``--apikey`` params, but it's easier to just 
+set them as environment variables::
 
     export CLOUD_SERVERS_USERNAME=jacobian
     export CLOUD_SERVERS_API_KEY=yadayada
+
+If you are using OpenStack or another Rackspace compatible API, you can 
+optionally define its authentication url with ``--url``. Or set it as
+an environment variable as well::
+
+    export CLOUD_SERVERS_URL=http://myserver:port/v1.0/
     
 You'll find complete documentation on the shell by running 
 ``cloudservers help``::
     
-    usage: cloudservers [--username USERNAME] [--apikey APIKEY] <subcommand> ...
+    usage: cloudservers [--username USERNAME] [--apikey APIKEY] 
+                        [--url AUTH_URL] <subcommand> ...
 
     Command-line interface to the Cloud Servers API.
 
@@ -79,6 +86,9 @@ You'll find complete documentation on the shell by running
     Optional arguments:
       --username USERNAME   Defaults to env[CLOUD_SERVERS_USERNAME].
       --apikey APIKEY       Defaults to env[CLOUD_SERVERS_API_KEY].
+      --url AUTH_URL        Defaults to env[CLOUD_SERVERS_URL] or
+                            https://auth.api.rackspacecloud.com/v1.0
+                            if undefined. 
 
     See "cloudservers help COMMAND" for help on a specific command.
     
@@ -92,7 +102,7 @@ __ http://packages.python.org/python-cloudservers/
 By way of a quick-start::
 
     >>> import cloudservers
-    >>> cs = cloudservers.CloudServers(USERNAME, API_KEY)
+    >>> cs = cloudservers.CloudServers(USERNAME, API_KEY [, AUTH_URL])
     >>> cs.flavors.list()
     [...]
     >>> cs.servers.list()

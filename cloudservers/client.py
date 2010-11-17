@@ -17,13 +17,13 @@ from cloudservers import exceptions
 
 class CloudServersClient(httplib2.Http):
     
-    AUTH_URL = 'https://auth.api.rackspacecloud.com/v1.0'
     USER_AGENT = 'python-cloudservers/%s' % cloudservers.__version__
     
-    def __init__(self, user, apikey):
+    def __init__(self, user, apikey, auth_url):
         super(CloudServersClient, self).__init__()
         self.user = user
         self.apikey = apikey
+        self.auth_url = auth_url
         
         self.management_url = None
         self.auth_token = None
@@ -83,7 +83,7 @@ class CloudServersClient(httplib2.Http):
 
     def authenticate(self):
         headers = {'X-Auth-User': self.user, 'X-Auth-Key': self.apikey}
-        resp, body = self.request(self.AUTH_URL, 'GET', headers=headers)
+        resp, body = self.request(self.auth_url, 'GET', headers=headers)
         self.management_url = resp['x-server-management-url']
         self.auth_token = resp['x-auth-token']
         

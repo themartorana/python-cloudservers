@@ -25,7 +25,7 @@ class CloudServers(object):
     
     Create an instance with your creds::
     
-        >>> cs = CloudServers(USERNAME, API_KEY)
+        >>> cs = CloudServers(USERNAME, API_KEY [, AUTH_URL])
         
     Then call methods on its managers::
     
@@ -37,9 +37,9 @@ class CloudServers(object):
     &c.
     """
     
-    def __init__(self, username, apikey):
+    def __init__(self, username, apikey, auth_url='https://auth.api.rackspacecloud.com/v1.0'):
         self.backup_schedules = BackupScheduleManager(self)
-        self.client = CloudServersClient(username, apikey)
+        self.client = CloudServersClient(username, apikey, auth_url)
         self.flavors = FlavorManager(self)
         self.images = ImageManager(self)
         self.ipgroups = IPGroupManager(self)

@@ -72,6 +72,13 @@ class CloudserversShell(object):
             default = env('CLOUD_SERVERS_API_KEY'),
             help='Defaults to env[CLOUD_SERVERS_API_KEY].')
         
+        auth_url = env('CLOUD_SERVERS_URL')
+        if auth_url = '':
+            auth_url = 'https://auth.api.rackspacecloud.com/v1.0'
+        self.parser.add_argument('--url',
+            default = auth_url,
+            help='Defaults to env[CLOUD_SERVERS_URL].')
+        
         # Subcommands
         subparsers = self.parser.add_subparsers(metavar='<subcommand>')
         self.subcommands = {}
@@ -113,7 +120,7 @@ class CloudserversShell(object):
         if args.debug:
             httplib2.debuglevel = 1
            
-        user, apikey = args.username, args.apikey
+        user, apikey, url = args.username, args.apikey, args.url
         if not user:
             raise CommandError("You must provide a username, either via "
                                "--username or via env[CLOUD_SERVERS_USERNAME]")
@@ -121,7 +128,7 @@ class CloudserversShell(object):
             raise CommandError("You must provide an API key, either via "
                                "--apikey or via env[CLOUD_SERVERS_API_KEY]")
 
-        self.cs = self._api_class(user, apikey)
+        self.cs = self._api_class(user, apikey, url)
         try:
             self.cs.authenticate()
         except cloudservers.Unauthorized:
