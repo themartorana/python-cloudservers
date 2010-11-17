@@ -15,7 +15,7 @@ def test_authenticate_success():
     @mock.patch.object(httplib2.Http, "request", mock_request)
     def test_auth_call():
         cs.client.authenticate()
-        mock_request.assert_called_with(cs.client.AUTH_URL, 'GET', 
+        mock_request.assert_called_with(cs.client.auth_url, 'GET', 
             headers = {
                 'X-Auth-User': 'username',
                 'X-Auth-Key': 'apikey',
