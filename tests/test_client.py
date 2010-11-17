@@ -8,7 +8,7 @@ fake_body = '{"hi": "there"}'
 mock_request = mock.Mock(return_value=(fake_response, fake_body))
 
 def client():
-    cl = CloudServersClient("username", "apikey")
+    cl = CloudServersClient("username", "apikey", "auth_test")
     cl.management_url = "http://example.com"
     cl.auth_token = "token"
     return cl

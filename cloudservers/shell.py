@@ -73,7 +73,7 @@ class CloudserversShell(object):
             help='Defaults to env[CLOUD_SERVERS_API_KEY].')
         
         auth_url = env('CLOUD_SERVERS_URL')
-        if auth_url = '':
+        if auth_url == '':
             auth_url = 'https://auth.api.rackspacecloud.com/v1.0'
         self.parser.add_argument('--url',
             default = auth_url,
@@ -128,6 +128,7 @@ class CloudserversShell(object):
             raise CommandError("You must provide an API key, either via "
                                "--apikey or via env[CLOUD_SERVERS_API_KEY]")
 
+        print "API CLASS=", self._api_class
         self.cs = self._api_class(user, apikey, url)
         try:
             self.cs.authenticate()

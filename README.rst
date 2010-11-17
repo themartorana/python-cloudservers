@@ -27,7 +27,7 @@ Command-line API
 ----------------
 
 Installing this package gets you a shell command, ``cloudservers``, that you
-can use to interact with Rackspace.
+can use to interact with any Rackspace compatible API (including OpenStack).
 
 You'll need to provide your Rackspace username and API key. You can do this
 with the ``--username`` and ``--apikey`` params, but it's easier to just 

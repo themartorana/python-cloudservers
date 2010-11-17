@@ -15,8 +15,8 @@ from cloudservers.client import CloudServersClient
 from utils import fail, assert_in, assert_not_in, assert_has_keys
 
 class FakeServer(CloudServers):
-    def __init__(self, username=None, password=None):
-        super(FakeServer, self).__init__('username', 'apikey')
+    def __init__(self, username=None, password=None, auth_url=None):
+        super(FakeServer, self).__init__('username', 'apikey', 'auth_url')
         self.client = FakeClient()
 
     def assert_called(self, method, url, body=None):
@@ -42,6 +42,7 @@ class FakeClient(CloudServersClient):
     def __init__(self):
         self.username = 'username'
         self.apikey = 'apikey'
+        self.auth_url = 'auth_url'
         self.callstack = []
     
     def _cs_request(self, url, method, **kwargs):
