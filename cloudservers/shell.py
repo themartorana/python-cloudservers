@@ -128,7 +128,6 @@ class CloudserversShell(object):
             raise CommandError("You must provide an API key, either via "
                                "--apikey or via env[CLOUD_SERVERS_API_KEY]")
 
-        print "API CLASS=", self._api_class
         self.cs = self._api_class(user, apikey, url)
         try:
             self.cs.authenticate()
