@@ -49,7 +49,19 @@ class Server(base.Resource):
                      or `REBOOT_HARD` for a virtual power cycle hard reboot.
         """
         self.manager.reboot(self, type)
-        
+
+    def pause(self):
+        """
+        Pause -- Pause the running server.
+        """
+        self.manager.pause(self)
+
+    def unpause(self):
+        """
+        Unpause -- Unpause the paused server.
+        """
+        self.manager.unpause(self)
+
     def rebuild(self, image):
         """
         Rebuild -- shut down and then re-image -- this server.

@@ -374,6 +374,16 @@ class CloudserversShell(object):
         server = self._find_server(args.server)
         flavor = self._find_flavor(args.flavor)
         server.resize(flavor)
+ 
+    @arg('server', metavar='<server>', help='Name or ID of server.')
+    def do_pause(self, args):
+        """Pause a server."""
+        self._find_server(args.server).pause()
+  
+    @arg('server', metavar='<server>', help='Name or ID of server.')
+    def do_unpause(self, args):
+        """Unpause a server."""
+        self._find_server(args.server).unpause()
     
     @arg('server', metavar='<server>', help='Name or ID of server.')
     def do_resize_confirm(self, args):
