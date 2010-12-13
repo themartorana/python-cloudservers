@@ -107,6 +107,8 @@ class Server(base.Resource):
         """
         Shortcut to get this server's primary public IP address.
         """
+        if len(self.addresses['public']) == 0:
+            return ""
         return self.addresses['public'][0]
     
     @property
@@ -114,6 +116,8 @@ class Server(base.Resource):
         """
         Shortcut to get this server's primary private IP address.
         """
+        if len(self.addresses['private']) == 0:
+            return ""
         return self.addresses['private'][0]
     
 class ServerManager(base.ManagerWithFind):
@@ -265,6 +269,18 @@ class ServerManager(base.ManagerWithFind):
         automatically confirmed after 24 hours.
         """
         self._action('resize', server, {'flavorId': base.getid(flavor)})
+         
+    def pause(self, server):
+        """
+        Pause the server.
+        """
+        self.api.client.post('/servers/%s/pause' % base.getid(server), body={})    
+          
+    def unpause(self, server):
+        """
+        Unpause the server.
+        """
+        self.api.client.post('/servers/%s/unpause' % base.getid(server), body={})    
         
     def confirm_resize(self, server):
         """

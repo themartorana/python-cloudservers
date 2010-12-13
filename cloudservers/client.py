@@ -38,11 +38,16 @@ class CloudServersClient(httplib2.Http):
             kwargs['headers']['Content-Type'] = 'application/json'
             kwargs['body'] = json.dumps(kwargs['body'])
             
+        #print "-------------"
+        #print "ARGS:", args
         resp, body = super(CloudServersClient, self).request(*args, **kwargs)
-        print "RESPONSEx", resp
-        print "BODYx", body
+        #print "RESPONSE", resp
+        #print "BODY", body
         if body:
-            body = json.loads(body)
+            try:
+                body = json.loads(body)
+            except ValueError, e:
+                pass
         else:
             body = None
 
@@ -85,12 +90,8 @@ class CloudServersClient(httplib2.Http):
 
     def authenticate(self):
         headers = {'X-Auth-User': self.user, 'X-Auth-Key': self.apikey}
-        print "HEADERS=", headers
         resp, body = self.request(self.auth_url, 'GET', headers=headers)
-        print "RESPONSE", resp
-        print "BODY", body
         self.management_url = resp['x-server-management-url']
-        print "URL=", self.management_url
         self.auth_token = resp['x-auth-token']
         
     def _munge_get_url(self, url):
