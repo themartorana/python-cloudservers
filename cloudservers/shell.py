@@ -383,7 +383,12 @@ class CloudserversShell(object):
     def do_unpause(self, args):
         """Unpause a server."""
         self._find_server(args.server).unpause()
-    
+
+    @arg('server', metavar='<server>', help='Name or ID of server.')
+    def do_diagnostics(self, args):
+        """Retrieve server diagnostics."""
+        print_dict(self.cs.servers.diagnostics(args.server)[1])
+
     @arg('server', metavar='<server>', help='Name or ID of server.')
     def do_resize_confirm(self, args):
         """Confirm a previous resize."""

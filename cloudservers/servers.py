@@ -62,6 +62,12 @@ class Server(base.Resource):
         """
         self.manager.unpause(self)
 
+    def diagnostics(self):
+        """
+        Diagnostics -- Retrieve server diagnostics.
+        """
+        self.manager.diagnostics(self)
+
     def rebuild(self, image):
         """
         Rebuild -- shut down and then re-image -- this server.
@@ -281,7 +287,13 @@ class ServerManager(base.ManagerWithFind):
         Unpause the server.
         """
         self.api.client.post('/servers/%s/unpause' % base.getid(server), body={})    
-        
+
+    def diagnostics(self, server):
+        """
+        Retrieve server diagnostics.
+        """
+        return self.api.client.get("/servers/%s/diagnostics" % base.getid(server))
+
     def confirm_resize(self, server):
         """
         Confirm that the resize worked, thus removing the original server.
