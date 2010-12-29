@@ -63,10 +63,12 @@ class Server(base.Resource):
         self.manager.unpause(self)
 
     def diagnostics(self):
-        """
-        Diagnostics -- Retrieve server diagnostics.
-        """
+        """Diagnostics -- Retrieve server diagnostics."""
         self.manager.diagnostics(self)
+
+    def actions(self):
+        """Actions -- Retrieve server actions."""
+        self.manager.actions(self)
 
     def rebuild(self, image):
         """
@@ -289,10 +291,12 @@ class ServerManager(base.ManagerWithFind):
         self.api.client.post('/servers/%s/unpause' % base.getid(server), body={})    
 
     def diagnostics(self, server):
-        """
-        Retrieve server diagnostics.
-        """
+        """Retrieve server diagnostics."""
         return self.api.client.get("/servers/%s/diagnostics" % base.getid(server))
+
+    def actions(self, server):
+        """Retrieve server actions."""
+        return self.api.client.get("/servers/%s/actions" % base.getid(server))
 
     def confirm_resize(self, server):
         """

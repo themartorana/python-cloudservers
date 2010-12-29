@@ -390,6 +390,11 @@ class CloudserversShell(object):
         print_dict(self.cs.servers.diagnostics(args.server)[1])
 
     @arg('server', metavar='<server>', help='Name or ID of server.')
+    def do_actions(self, args):
+        """Retrieve server actions."""
+        print_dict(self.cs.servers.actions(args.server)[1])
+
+    @arg('server', metavar='<server>', help='Name or ID of server.')
     def do_resize_confirm(self, args):
         """Confirm a previous resize."""
         self._find_server(args.server).confirm_resize()
