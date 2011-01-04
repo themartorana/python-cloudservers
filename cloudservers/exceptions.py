@@ -45,12 +45,22 @@ class OverLimit(CloudServersException):
     http_status = 413
     message = "Over limit"
 
+# NotImplemented is a python keyword. 
+class HTTPNotImplemented(CloudServersException):
+    """
+    HTTP 501 - Not Implemented: the server does not support this operation.
+    """
+    http_status = 501
+    message = "Not Implemented"
+
+
 # In Python 2.4 Exception is old-style and thus doesn't have a __subclasses__()
 # so we can do this:
 #     _code_map = dict((c.http_status, c) for c in CloudServersException.__subclasses__())
 #
 # Instead, we have to hardcode it:
-_code_map = dict((c.http_status, c) for c in [BadRequest, Unauthorized, Forbidden, NotFound, OverLimit])
+_code_map = dict((c.http_status, c) for c in [BadRequest, Unauthorized, Forbidden, 
+                   NotFound, OverLimit, HTTPNotImplemented])
 
 def from_response(response, body):
     """
@@ -65,9 +75,12 @@ def from_response(response, body):
     """
     cls = _code_map.get(response.status, CloudServersException)
     if body:
-        error = body[body.keys()[0]]
-        return cls(code=response.status, 
-                   message=error.get('message', None),
-                   details=error.get('details', None))
+        message = "n/a"
+        details = "n/a"
+        if hasattr(body, 'keys'):
+            error = body[body.keys()[0]]
+            message = error.get('message', None)
+            details = error.get('details', None)
+        return cls(code=response.status, message=message, details=details)
     else:
         return cls(code=response.status)
