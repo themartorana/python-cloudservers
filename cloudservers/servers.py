@@ -296,7 +296,7 @@ class ServerManager(base.ManagerWithFind):
 
     def actions(self, server):
         """Retrieve server actions."""
-        return self.api.client.get("/servers/%s/actions" % base.getid(server))
+        return self._list("/servers/%s/actions" % base.getid(server), "actions")
 
     def confirm_resize(self, server):
         """
