@@ -97,7 +97,7 @@ def test_boot_files():
 
 def test_boot_invalid_file():
     invalid_file = os.path.join(os.path.dirname(__file__), 'asdfasdfasdfasdf')
-    assert_raises(CommandError, shell, 'boot some-server --image 1'
+    assert_raises(CommandError, shell, 'boot some-server --image 1 '
                                        '--file /foo=%s' % invalid_file)
 
 
@@ -151,7 +151,7 @@ def test_boot_key_file():
 
 def test_boot_invalid_keyfile():
     invalid_file = os.path.join(os.path.dirname(__file__), 'asdfasdfasdfasdf')
-    assert_raises(CommandError, shell, 'boot some-server'
+    assert_raises(CommandError, shell, 'boot some-server '
                                        '--image 1 --key %s' % invalid_file)
 
 
