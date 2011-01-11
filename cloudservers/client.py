@@ -15,19 +15,20 @@ if not hasattr(urlparse, 'parse_qsl'):
 import cloudservers
 from cloudservers import exceptions
 
+
 class CloudServersClient(httplib2.Http):
-    
+
     USER_AGENT = 'python-cloudservers/%s' % cloudservers.__version__
-    
+
     def __init__(self, user, apikey, auth_url):
         super(CloudServersClient, self).__init__()
         self.user = user
         self.apikey = apikey
         self.auth_url = auth_url
-        
+
         self.management_url = None
         self.auth_token = None
-        
+
         # httplib2 overrides
         self.force_exception_to_status_code = True
 
@@ -37,7 +38,7 @@ class CloudServersClient(httplib2.Http):
         if 'body' in kwargs:
             kwargs['headers']['Content-Type'] = 'application/json'
             kwargs['body'] = json.dumps(kwargs['body'])
-            
+
         # print "-------------"
         # print "ARGS:", args
         resp, body = super(CloudServersClient, self).request(*args, **kwargs)
@@ -65,12 +66,14 @@ class CloudServersClient(httplib2.Http):
         # re-authenticate and try again. If it still fails, bail.
         try:
             kwargs.setdefault('headers', {})['X-Auth-Token'] = self.auth_token
-            resp, body = self.request(self.management_url + url, method, **kwargs)
+            resp, body = self.request(self.management_url + url, method,
+                                      **kwargs)
             return resp, body
         except exceptions.Unauthorized, ex:
             try:
                 self.authenticate()
-                resp, body = self.request(self.management_url + url, method, **kwargs)
+                resp, body = self.request(self.management_url + url, method,
+                                          **kwargs)
                 return resp, body
             except exceptions.Unauthorized:
                 raise ex
@@ -78,13 +81,13 @@ class CloudServersClient(httplib2.Http):
     def get(self, url, **kwargs):
         url = self._munge_get_url(url)
         return self._cs_request(url, 'GET', **kwargs)
-    
+
     def post(self, url, **kwargs):
         return self._cs_request(url, 'POST', **kwargs)
-    
+
     def put(self, url, **kwargs):
         return self._cs_request(url, 'PUT', **kwargs)
-    
+
     def delete(self, url, **kwargs):
         return self._cs_request(url, 'DELETE', **kwargs)
 
@@ -93,15 +96,15 @@ class CloudServersClient(httplib2.Http):
         resp, body = self.request(self.auth_url, 'GET', headers=headers)
         self.management_url = resp['x-server-management-url']
         self.auth_token = resp['x-auth-token']
-        
+
     def _munge_get_url(self, url):
         """
         Munge GET URLs to always return uncached content.
-        
-        The Cloud Servers API caches data *very* agressively and doesn't respect
-        cache headers. To avoid stale data, then, we append a little bit of
-        nonsense onto GET parameters; this appears to force the data not to be
-        cached.
+
+        The Cloud Servers API caches data *very* agressively and doesn't
+        respect cache headers. To avoid stale data, then, we append a little
+        bit of nonsense onto GET parameters; this appears to force the data not
+        to be cached.
         """
         scheme, netloc, path, query, frag = urlparse.urlsplit(url)
         query = urlparse.parse_qsl(query)

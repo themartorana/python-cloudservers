@@ -6,9 +6,10 @@ class CloudServersException(Exception):
         self.code = code
         self.message = message or self.__class__.message
         self.details = details
-        
+
     def __str__(self):
         return "%s (HTTP %s)" % (self.message, self.code)
+
 
 class BadRequest(CloudServersException):
     """
@@ -17,6 +18,7 @@ class BadRequest(CloudServersException):
     http_status = 400
     message = "Bad request"
 
+
 class Unauthorized(CloudServersException):
     """
     HTTP 401 - Unauthorized: bad credentials.
@@ -24,19 +26,23 @@ class Unauthorized(CloudServersException):
     http_status = 401
     message = "Unauthorized"
 
+
 class Forbidden(CloudServersException):
     """
-    HTTP 403 - Forbidden: your credentials don't give you access to this resource.
+    HTTP 403 - Forbidden: your credentials don't give you access to this
+    resource.
     """
     http_status = 403
     message = "Forbidden"
-    
+
+
 class NotFound(CloudServersException):
     """
     HTTP 404 - Not found
     """
     http_status = 404
     message = "Not found"
+
 
 class OverLimit(CloudServersException):
     """
@@ -45,7 +51,8 @@ class OverLimit(CloudServersException):
     http_status = 413
     message = "Over limit"
 
-# NotImplemented is a python keyword. 
+
+# NotImplemented is a python keyword.
 class HTTPNotImplemented(CloudServersException):
     """
     HTTP 501 - Not Implemented: the server does not support this operation.
@@ -56,19 +63,21 @@ class HTTPNotImplemented(CloudServersException):
 
 # In Python 2.4 Exception is old-style and thus doesn't have a __subclasses__()
 # so we can do this:
-#     _code_map = dict((c.http_status, c) for c in CloudServersException.__subclasses__())
+#     _code_map = dict((c.http_status, c)
+#                      for c in CloudServersException.__subclasses__())
 #
 # Instead, we have to hardcode it:
-_code_map = dict((c.http_status, c) for c in [BadRequest, Unauthorized, Forbidden, 
-                   NotFound, OverLimit, HTTPNotImplemented])
+_code_map = dict((c.http_status, c) for c in [BadRequest, Unauthorized,
+                   Forbidden, NotFound, OverLimit, HTTPNotImplemented])
+
 
 def from_response(response, body):
     """
     Return an instance of a CloudServersException or subclass
-    based on an httplib2 response. 
-    
+    based on an httplib2 response.
+
     Usage::
-    
+
         resp, body = http.request(...)
         if resp.status != 200:
             raise exception_from_response(resp, body)
