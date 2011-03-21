@@ -60,3 +60,9 @@ class CloudServers(object):
         credentials are wrong.
         """
         self.client.authenticate()
+    
+    def limits(self):
+        return self.client.get('/limits')
+    
+    def readable_limits(self):
+        print self.limits()
